@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class AuthController extends Controller
 {
@@ -19,9 +24,18 @@ class AuthController extends Controller
 
     //direct dashboard
     public function dashboard(){
-        if(Auth::user()->role =='admin'){
-            return redirect()->route('category#list');
+        if (Auth::check()) {
+            // Check the role of the authenticated user
+            if (Auth::user()->role == 'admin') {
+                return redirect()->route('category#list'); // Adjust this route as needed
+            }
+            else {
+                return redirect()->route('user#home'); // Adjust this route as needed
+            }
         }
-        return redirect()->route('user#home');
+
+        return redirect()->route('auth#loginPage');
     }
+
+
 }

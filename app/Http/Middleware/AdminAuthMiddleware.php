@@ -17,11 +17,21 @@ class AdminAuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // Check if the user is authenticated and has an 'admin' role
-        if (!Auth::check() || Auth::user()->role != 'admin') {
-            return abort(403, 'Unauthorized access.');
-        }
 
+        if(!empty(Auth::user())){
+            if(url()->current() == route('auth#loginPage') || url()->current() == route('auth#registerPage')){
+                return back();
+            }
+             // Check if the user is authenticated and has an 'admin' role
+            if (!Auth::check() || Auth::user()->role != 'admin') {
+                return abort(403, 'Unauthorized access.');
+            }
+
+            return $next($request);
+        }
         return $next($request);
     }
+
+
+
 }

@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'address' => 'Mdy',
             'role' => 'admin',
             'password' => Hash::make('p@ssword'),
-
+            'gender' => 'male'
         ]);
     }
 }

@@ -15,20 +15,31 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    // 'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+    // 'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    // 'allowed_origins' => ['*'],
 
+    // 'allowed_origins_patterns' => [],
+
+    // 'allowed_headers' => ['*'],
+
+    // 'exposed_headers' => [],
+
+    // 'max_age' => 0,
+
+    // 'supports_credentials' => false,
+    'paths' => ['api/*', 'user/*'], // Adjust this to include your custom routes like /user/ajax/*
+    'allowed_methods' => ['*'], // Allow all HTTP methods
+    'allowed_origins' => ['http://localhost:8000'], // Add the frontend origin (http://localhost:8000 in your case)
     'allowed_origins_patterns' => [],
-
-    'allowed_headers' => ['*'],
-
-    'exposed_headers' => [],
-
+    'allowed_headers' => ['*'], // Allow all headers
+    'exposed_headers' => false,
     'max_age' => 0,
-
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
+
+
+

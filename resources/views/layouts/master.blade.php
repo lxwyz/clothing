@@ -20,6 +20,10 @@
 
     <!-- Bootstrap CSS-->
     <link href="{{asset('admin/vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
 
     <!-- Vendor CSS-->
     <link href="{{asset('admin/vendor/animsition/animsition.min.css')}}" rel="stylesheet" media="all">
@@ -29,6 +33,7 @@
     <link href="{{asset('admin/vendor/slick/slick.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('admin/vendor/select2/select2.min.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('admin/vendor/perfect-scrollbar/perfect-scrollbar.css')}}" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Main CSS-->
     <link href="{{asset('admin/css/theme.css')}}" rel="stylesheet" media="all">
@@ -42,9 +47,8 @@
                 <div class="login-wrap">
                     <div class="login-content">
                         <div class="login-logo">
-                            <a href="#">
-                                <img src="{{asset('admin/images/icon/logo.png')}}" alt="CoolAdmin">
-                            </a>
+                            <h2><i class="bi bi-flower3"></i>
+                                Mauve's Clothing</h2>
                         </div>
                         @yield('content')
                     </div>
