@@ -38,7 +38,7 @@
                                 <div class="info clearfix">
                                     @if (Auth::user()->image == null)
                                         @if (Auth::user()->gender == 'male')
-                                        <img src="{{ asset('image/default_user3' ) }}" class="img-thumbnail shadow-sm">
+                                        <img src="{{ asset('image/default_user3.png' ) }}" class="img-thumbnail shadow-sm">
                                         @else
                                             <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail shadow-sm">
                                         @endif
@@ -162,12 +162,12 @@
                                 <td class="col-1">
                                     @if ($admin->image == null)
                                        @if ($admin->gender == 'male')
-                                            <img src="{{ asset('image/default_user3' ) }}" class="img-thumbnail shadow-sm">
+                                            <img src="{{ asset('image/default_user3.png' ) }}" class=" shadow-sm">
                                        @else
-                                           <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail shadow-sm">
+                                           <img src="{{asset('image/placeholder-female.jpg')}}" class=" shadow-sm">
                                        @endif
                                     @else
-                                        <img src="{{ asset('storage/'.$admin->image) }}" class="img-thumbnail shadow-sm">
+                                        <img src="{{ asset('storage/'.$admin->image) }}" class=" shadow-sm">
                                     @endif
                                 </td>
 

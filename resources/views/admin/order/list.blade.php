@@ -163,7 +163,7 @@
 
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="dataList">
                         @foreach ($orders as $order )
                         <tr class="tr-shadow my-2">
                             <td>{{ $order->user_id}}</td>
@@ -177,36 +177,10 @@
                                     <option value="1" @if($order->status == 1) selected @endif>  Success</option>
                                     <option value="2"@if($order->status == 2) selected @endif>  Reject</option>
                                 </select>
-                                {{-- @if ($order->status == 0)
-                                    <span class="text-warning"> Pending</span>
-                                @elseif ($order->status ==1)
-                                    <span class="text-success">  Success</span>
-                                @elseif($order->status == 2)
-                                    <span class="text-danger">  Reject</span>
-                                @endif --}}
-                            </td><!-- Display view_count -->
-                            <td>
-                                <div class="table-data-feature">
-                                    {{-- <a href="{{ route('products#edit', $product->id) }}">
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="View">
-                                            <i class="bi bi-view-list"></i>
-                                        </button>
-                                    </a>
-                                    <a href="{{ route('products#updatePage', $product->id) }}">
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                            <i class="fas fa-pen-square"></i>
-                                        </button>
-                                    </a>
-                                    <a href="{{ route('products#delete', $product->id) }}">
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </a> --}}
-                                </div>
+
                             </td>
                         </tr>
                         @endforeach
-
                     </tbody>
                 </table>
                 <!-- Pagination Links -->
@@ -219,4 +193,47 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scriptSource')
+<script>
+    $(document).ready(function(){
+        $('#orderStatus').change(function(){
+            $status = $('#orderStatus').val();
+            $.ajax({
+                type: 'get',
+                url: "{{route('order#ajaxStatus')}}",
+                data: {
+                    status: $status,
+
+                },
+                dataType: 'json',
+                success: function(response){
+                    let listHtml = '';
+                    response.forEach(order => {
+                        listHtml += `
+                             <tr class="tr-shadow my-2">
+                            <td> ${order.user_id}</td>
+                            <td>${order.user_name }</td>
+                            <td>${new Date(order.created_at).toLocaleDateString('en-GB', {
+                                day: 'numeric', month: 'long', year: 'numeric'
+                            })}</td>
+                            <td>${order.order_code }</td>
+                            <td>${order.total_price}</td>
+                            <td class="align-middle">
+                                <select name="status" class="form-control">
+                                    <option value="0" ${order.status == 0 ? 'selected' : ''}>  Pending</option>
+                                    <option value="1" ${order.status == 1 ? 'selected' : ''}>  Success</option>
+                                    <option value="2" ${order.status == 2 ? 'selected' : ''}>  Reject</option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        `;
+                    });
+                    $('#dataList').html(listHtml);
+                }
+            })
+        })
+    })
+</script>
 @endsection
