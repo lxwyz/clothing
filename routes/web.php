@@ -74,9 +74,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('update/{id}',[ProductController::class, 'update'])->name('products#update');
     });
 
+    Route::prefix('user')->group(function(){
+        Route::get('userList',[UserController::class,'userList'])->name('admin#userList');
+        Route::get('ajax/status/change',[UserController::class,'ajaxUserChangeStatus'])->name('admin#ajaxUserChangeStatus');
+    });
+
     Route::prefix('order')->group(function(){
         Route::get('list',[OrderController::class,'list'])->name('order#list');
         Route::get('ajax/status',[OrderController::class,'ajaxStatus'])->name('order#ajaxStatus');
+        Route::get('ajax/status/change',[OrderController::class,'ajaxChangeStatus'])->name('order#ajaxStatusChange');
+        Route::get('listInfo/{ordercode}',[OrderController::class,'listInfo'])->name('order#listInfo');
+
     });
 
     //profile
@@ -130,6 +138,7 @@ Route::middleware(['auth'])->group(function () {
        Route::prefix('ajax')->group(function(){
             Route::get('product/list',[AjaxController::class,'productList'])->name('ajax#productList');
             Route::post('cart',[AjaxController::class,'addToCart'])->name('ajax#addToCart');
+            Route::get('increase/viewCount',[AjaxController::class,'increaseViewCount'])->name('ajax#increaseViewCount');
             Route::get('order',[AjaxController::class,'order'])->name('ajax#order');
             Route::get('clear/cart',[AjaxController::class,'clearCart'])->name('ajax#clearCart');
             Route::get('remove/cart',[AjaxController::class,'removeCart'])->name('ajax#removeCart');

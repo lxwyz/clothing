@@ -29,7 +29,7 @@
                             <small class="fas fa-star-half-alt"></small>
                             <small class="far fa-star"></small>
                         </div>
-                        <small class="pt-1">(99 Reviews)</small>
+                        <small class="pt-1"> <i class="bi bi-eye-fill"></i> {{$product->view_count + 1}}</small>
                     </div>
                     <h3 class="font-weight-semi-bold mb-4">{{$product->price}} kyats</h3>
                     <p class="mb-4">{{$product->description}}</p>
@@ -107,6 +107,13 @@
 @section('scriptSource')
 <script>
     $(document).ready(function() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route("ajax#increaseViewCount") }}',  // Correct Laravel route
+            data: {'productId' : $('#productId').val() },
+            dataType: 'json',
+
+        });
         // Handling the Plus Button
         $('.btn-plus').click(function(){
             var quantity = parseInt($('#orderCount').val());  // Get the current quantity

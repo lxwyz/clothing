@@ -68,6 +68,11 @@
                                <i class="fas fa-square"></i> Product Lists
                             </a>
                         </li>
+                        <li>
+                            <a href="{{route('admin#userList')}}">
+                               <i class="bi bi-people-fill"></i> Customter Lists
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>

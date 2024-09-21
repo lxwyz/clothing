@@ -17,6 +17,19 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    //user chanege role
+    public function ajaxUserChangeStatus(Request $request){
+        User::where('id',$request->userId)->update([
+            'role' => $request->role
+        ]);
+    }
+    //user account
+
+    public function userList(){
+        $users = User::where('role','user')->paginate(5);
+        return view('admin.user.list',compact('users'));
+    }
+
     //order History Page
     public function historyPage(){
         $order = Order::where('user_id',Auth::user()->id)

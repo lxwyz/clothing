@@ -20,9 +20,10 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        //     'mail' => 'test@example.com',
+        // ]);\
 
+        //admin account
         User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
@@ -32,5 +33,16 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('p@ssword'),
             'gender' => 'male'
         ]);
+
+        //shop admin account
+        // User::create([
+        //     'name' => 'Tiffany',
+        //     'email' => 'admin@gmail.com',
+        //     'phone' => '09778342984',
+        //     'address' => 'Muse',
+        //     'role' => 'shop_admin',
+        //     'password' => Hash::make('admin123'),
+        //     'gender' => 'female'
+        // ]);
     }
 }

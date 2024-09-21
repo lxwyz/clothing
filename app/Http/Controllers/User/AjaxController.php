@@ -77,4 +77,29 @@ class AjaxController extends Controller
        Cart::where('user_id',Auth::user()->id)->where('product_id',$request->product_id)->delete();
        return response()->json(['status' => 'true']);
     }
+
+
+    public function increaseViewCount(Request $request)
+    {
+        // Find the product and increment its view count in one step
+        $product = Product::where('id', $request->productId)->first();
+
+        if ($product) {
+            $product->view_count += 1;
+            $product->save();
+
+            // Return a success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'View count increased!',
+                'viewCount' => $product->view_count
+            ]);
+        }
+
+        // Return an error response if product not found
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Product not found!'
+        ], 404);
+    }
 }

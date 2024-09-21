@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Order List')
+@section('title', 'Order Info')
 
 @section('content')
 <header class="header-desktop">
@@ -93,7 +93,7 @@
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
                         <div class="overview-wrap">
-                            <h2 class="title-1">Order Lists</h2>
+                            <h2 class="title-1">Order Info</h2>
                         </div>
                     </div>
                     <div class="table-data__tool-right">
@@ -126,7 +126,7 @@
                     <div class="col-3">
                         <h4 class="text-secondary">Search Key: <span class="text-danger">{{ request('key') }}</span></h4>
                     </div>
-                    <div class="col-3 offset-9">
+                    {{-- <div class="col-3 offset-9">
                         <form action="" method="GET">
                             @csrf
                             <div class="d-flex ">
@@ -136,59 +136,72 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    </div> --}}
                 </div>
                 <br>
-              <div class="d-flex align-items-center">
-                <label for="" class="mt-2 me-4">Order Status</label>
-                <select id="orderStatus" class="form-control w-auto">
-                    <option value="">All</option>
-                    <option value="0">Pending</option>
-                    <option value="1">Success</option>
-                    <option value="2">Reject</option>
-                </select>
-              </div>
+
+                <div class="row col-5">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h3> <i class="bi bi-list-ol"></i> Order Info</h3>
+                            <small class="text-warning mt-3"> <i class="bi bi-exclamation-circle-fill"></i> Include Delivery Charges</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col"> <i class="bi bi-person-fill"></i> Customer Name</div>
+                                <div class="col">  {{$orderList[0]->user_name}}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col"><i class="bi bi-upc"></i> Order Code</div>
+                                <div class="col">{{$orderList[0]->order_code}}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col"><i class="bi bi-calendar-check-fill"></i> Order Date</div>
+                                <div class="col">{{$orderList[0]->created_at->format('F-j-y')}}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col"><i class="bi bi-coin"></i> Total</div>
+                                <div class="col">{{$order->total_price}} Kyats</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
             <div class="table-responsive table-responsive-data2">
                 <table class="table table-data2">
                     <thead>
                         <tr>
-                            <th>User Id</th>
-                            <th>User Name</th>
-                            <th>Order Date</th>
-                            <th>Order Code</th>
+                            <th></th>
+                            <th>Order ID</th>
+                            <th>Product Image</th>
+                            <th>Product Name</th>
+                            <th>Qty</th>
                             <th>Amount</th>
-                            <th>Status</th>
-
+                            <th>Order Date</th>
                         </tr>
                     </thead>
                     <tbody id="dataList">
-                        @foreach ($orders as $order )
+                        @foreach ($orderList as $o )
                         <tr class="tr-shadow my-2">
-                            <input type="hidden" class="orderId" value="{{$order->id}}">
-                            <td>{{ $order->user_id}}</td>
-                            <td>{{ $order->user_name }}</td>
-                            <td>{{ $order->created_at->format('j-F-y') }}</td>
-                            <td>
-                                <a href="{{route('order#listInfo',$order->order_code)}}" class="text-primary">{{ $order->order_code }}</a>
-                            </td>
-                            <td class="amount">{{ $order->total_price }}</td>
-                            <td class="align-middle">
-                                <select name="status" class="form-control statusChange">
-                                    <option value="0" @if($order->status == 0) selected @endif>  Pending</option>
-                                    <option value="1" @if($order->status == 1) selected @endif>  Success</option>
-                                    <option value="2"@if($order->status == 2) selected @endif>  Reject</option>
-                                </select>
-
-                            </td>
+                            <td></td>
+                            <td>{{ $o->id}}</td>
+                            <td class="col-2"><img src="{{asset('storage/'.$o->product_image)}}" class="img-thumbnail shadow-sm" style="width: 100px;"></td>
+                            <td>{{$o->product_name}}</td>
+                            <td>{{$o->Qty}}</td>
+                            <td >{{ $o->total_amount }}</td>
+                            <td>{{$o->created_at->format('F-j-y')}}</td
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-3">
+                    <a href="{{route('order#list')}}" class="btn btn-success"><i class="bi bi-arrow-bar-left"></i> Back</a>
+                </div>
                 <!-- Pagination Links -->
                 <div class="mt-3">
-                    {{$orders->links()}}
+                    {{-- {{$orders->links()}} --}}
                 </div>
             </div>
 
@@ -197,7 +210,7 @@
     </div>
 </div>
 @endsection
-@section('scriptSource')
+{{-- @section('scriptSource')
 <script>
     $(document).ready(function(){
         $('#orderStatus').change(function(){
@@ -256,4 +269,4 @@
         });
     });
 </script>
-@endsection
+@endsection --}}
