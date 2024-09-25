@@ -44,9 +44,9 @@
         <div class="form-group">
             <label>Role</label>
             <select name="role" class="form-control">
-
                 <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
                 <option value="shop_admin" {{ old('role') == 'shop_admin' ? 'selected' : '' }}>Shop Admin</option>
+                <option value="delivery_person" {{ old('role') == 'delivery_person' ? 'selected' : '' }}>Delivery</option>
             </select>
         </div>
 

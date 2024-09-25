@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('shop.layouts.app')
 
 @section('title','Category List')
 
@@ -19,15 +19,22 @@
                         <div class="noti__item js-item-menu">
 
 
+
                         </div>
                     </div>
                     <div class="account-wrap">
                         <div class="account-item clearfix js-item-menu">
                             <div class="image ">
                                 @if (Auth::user()->image == null)
-                                    <div class="image">
-                                        <img src="{{asset('image/default_user3.png')}}" class="img-thumbnail shadow-sm" />
-                                    </div>
+                                    @if (Auth::user()== 'female')
+                                        <div class="image">
+                                            <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail shadow-sm" />
+                                        </div>
+                                    @else
+                                        <div class="image">
+                                            <img src="{{ asset('image/default_user3.png') }}" />
+                                        </div>
+                                    @endif
                                 @else
                                     <div class="image shadow-sm">
                                          <img src="{{asset('storage/'.Auth::user()->image)}}" class="img-thumbnail shadow-sm"/>
@@ -41,9 +48,15 @@
                                 <div class="info clearfix">
                                 <div class="image">
                                     @if (Auth::user()->image == null)
-                                        <div class="image shadow-sm">
-                                            <img src="{{asset('image/default_user3.png')}}" class="img-thumbnail shadow-sm"/>
-                                        </div>
+                                        @if (Auth::user()->gender == 'female')
+                                            <div class="image shadow-sm">
+                                                <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail shadow-sm"/>
+                                            </div>
+                                        @else
+                                            <div class="image">
+                                                <img src="{{ asset('image/default_user3.png') }}" />
+                                            </div>
+                                        @endif
                                     @else
                                         <div class="image shadow-sm">
                                             <a href="#">
@@ -63,12 +76,6 @@
                                     <div class="account-dropdown__item">
                                         <a href="#">
                                             <i class="zmdi zmdi-account"></i>Account</a>
-                                    </div>
-                                </div>
-                                <div class="account-dropdown__body">
-                                    <div class="account-dropdown__item">
-                                        <a href="{{route('admin#changePasswordPage')}}">
-                                            <i class="zmdi zmdi-account"></i>Change Password</a>
                                     </div>
                                 </div>
                                 <div class="account-dropdown__footer my-3">
@@ -110,31 +117,50 @@
             <div class="col-lg-6 offset-3">
                 <div class="card">
                     <div class="card-body">
-                        <div class="ms-5">
-                            <i class="bi bi-arrow-bar-left text-dark" onclick="history.back()"></i>
+                        <div class="card-title">
+                            <h3 class="password-center title-2 text-center">Account Info</h3>
                         </div>
-
+                        <hr>
                         <div class="row">
-                            <div class="col-3 offset-2">
-                                 <div class="image">
-                                    <img src="{{asset('storage/'.$products->image)}}" class="img-thumbnail shadow-sm" />
-                                </div>
+                            <div class="col-3 offset-2 box-shadow">
+                                @if ($deliveryPerson->image == null)
+                                       @if ($deliveryPerson->gender == 'female')
+                                            <div class="image">
+                                                <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail shadow-sm" />
+                                            </div>
+                                       @else
+                                            <div class="image">
+                                                <img src="{{ asset('image/default_user3.png') }}" />
+                                            </div>
+                                       @endif
+                                @else
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="{{asset('storage/'.$deliveryPerson->image)}}" class="img-thumbnail shadow-sm" />
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="col-7">
-                                <div class="my-3 text-dark d-block w-50 fs-3 "> {{$products->name}}</div>
-                                <span class="my-3 btn bg-dark text-white"> <i class="bi bi-tag-fill"></i> {{$products->price}} kyats</span>
-                                <span class="my-3 btn bg-dark text-white"><i class="bi bi-eye-fill fs-6 me-2"></i> {{$products->view_count}}</span>
-                                <span class="my-3 btn bg-dark text-white"><i class="bi bi-basket"></i> {{$products->category_id}}</span>
-                                <span class="my-3 btn bg-dark text-white"> <i class="bi bi-calendar-date-fill fs-5 me-2"></i> {{$products->created_at->format('j-F-y')}}</span>
-                                <div class="my-3"><i class="bi bi-card-heading"></i> Details </div>
-                                <div>{{$products->description}}</div>
+                            <div class="col-5 offset-2 ">
+                                <h4 class="my-3"> <i class="bi bi-pencil-square me-2"></i> {{$deliveryPerson->name}}</h4>
+                                <h4 class="my-3"> <i class="bi bi-envelope-open-heart-fill me-2"></i> {{$deliveryPerson->email}}</h4>
+                                <h4 class="my-3"> <i class="bi bi-person-vcard-fill me-2"></i> {{$deliveryPerson->address}}</h4>
+                                <h4 class="my-3"> <i class="bi bi-phone me-2"></i> {{$deliveryPerson->phone}}</h4>
+                                <h4 class="my-3"> <i class="bi bi-gender-ambiguous me-2">{{$deliveryPerson->gender}}</i></h4>
+                                <h4 class="my-3"><i class="bi bi-calendar-date-fill me-2"></i> {{$deliveryPerson->created_at->format('j-F-y')}}</h4>
+                                <br>
+                                <a href="{{route('deliveryPerson#list')}}">
+                                    <button class="btn bg-danger text-white">
+                                        <i class="fas fa-backward"></i> Back
+                                    </button>
+                                </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4 offset-2 mt-3">
-                               <a href="{{route('products#updatePage',$products->id)}}">
+                               <a href="">
                                     <button class="btn bg-dark text-white">
-                                        <i class="bi bi-pencil-square"></i> Update
+                                        <i class="bi bi-pencil-square"></i> Edit Profile
                                     </button>
                                </a>
                             </div>

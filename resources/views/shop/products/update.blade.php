@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('shop.layouts.app')
 
 @section('title','Category List')
 
@@ -26,9 +26,15 @@
                         <div class="account-item clearfix js-item-menu">
                             <div class="image ">
                                 @if (Auth::user()->image == null)
-                                    <div class="image">
-                                        <img src="{{asset('image/default_user3.png')}}" class="img-thumbnail shadow-sm" />
-                                    </div>
+                                    @if (Auth::user()->gender == 'male')
+                                        @if (Auth::user()->gender == 'male')
+                                            <img src="{{ asset('image/default_user3.png' ) }}" class="img-thumbnail shadow-sm">
+                                        @else
+                                            <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail img-fluid shadow-sm">
+                                        @endif
+                                    @else
+                                        <img src="{{asset('image/placeholder-female.jpg')}}" class=" shadow-sm">
+                                    @endif
                                 @else
                                     <div class="image shadow-sm">
                                         <a href="#">
@@ -44,7 +50,11 @@
                                 <div class="info clearfix">
                                 <div class="image">
                                    <div class="image shadow-sm">
-                                            <img src="{{asset('image/default_user3.png')}}" class="img-thumbnail shadow-sm"/>
+                                    @if (Auth::user()->gender == 'male')
+                                        <img src="{{ asset('image/default_user3.png' ) }}" class="img-thumbnail shadow-sm">
+                                    @else
+                                        <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail img-fluid shadow-sm">
+                                    @endif
                                     </div>
 
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Shop;
 use Illuminate\Support\Facades\Validator;
 use Storage;
 
@@ -22,15 +23,28 @@ class ProductController extends Controller
                     ->paginate(3);
         // dd($products->toArray());
        $products->appends(request()->all());
-       return view('admin.products.productList',compact('products'));
+       return view('shop.products.productList',compact('products'));
     }
+    public function view(){
+        $products = Product::select('products.*','categories.name as category_name')
+                     ->when(request('key'),function($query){
+                     $query->where('products.name','like','%'.request('key').'%');
+                     })
+                     ->leftJoin('categories','products.category_id','categories.id')
+                     ->orderBy('products.created_at','asc')
+                     ->paginate(3);
+         // dd($products->toArray());
+        $products->appends(request()->all());
+        return view('admin.products.productList',compact('products'));
+     }
 
 
     // direct create product page
     public function createPage(){
+        $shops = Shop::all();
         $categories = Category::select('id','name')->get();
 
-        return view('admin.products.createProduct',compact('categories'));
+        return view('shop.products.createProduct',compact('categories','shops'));
     }
 
     //delete product
@@ -47,15 +61,15 @@ class ProductController extends Controller
     public function edit($id){
         $products = Product::where('id',$id)->first();
 
-        return view('admin.products.edit',compact('products'));
+        return view('shop.products.edit',compact('products'));
     }
 
 
     //update page
     public function updatePage($id){
         $products = Product::where('id',$id)->first();
-        $categories = Category::select('category_id','name')->get();
-        return view('admin.products.update',compact('products','categories'));
+        $categories = Category::select('id','name')->get();
+        return view('shop.products.update',compact('products','categories'));
     }
 
     //products update
@@ -93,6 +107,7 @@ class ProductController extends Controller
        $this->productValidationCheck($request,'create');
 
        $data = $this->requestProductInfo($request);
+       $data['shop_id'] = $request->shop_id;
 
 
         $fileName = uniqid().$request->file('productImage')->getClientOriginalName();
@@ -101,6 +116,7 @@ class ProductController extends Controller
 
 
         Product::create($data);
+        // dd($data->toArray());
 
         return redirect()->route('products#list')->with('createSuccess','Product created successfully.');
     }
@@ -112,6 +128,7 @@ class ProductController extends Controller
             'productCategory' => 'required',
             'productDescription' => 'required',
             'productPrice' => 'required|numeric',
+            'shop_id' => 'required|exists:shops,id',
 
         ];
 
@@ -129,6 +146,7 @@ class ProductController extends Controller
             'category_id' => $request->productCategory,
             'description' => $request->productDescription,
             'price' => $request->productPrice,
+            'shop_id'=>$request->shop_id
         ];
     }
 

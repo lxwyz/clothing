@@ -39,41 +39,38 @@
     <link href="{{asset('admin/css/theme.css')}}" rel="stylesheet" media="all">
     <style>
         /* Parent container for image and account name */
-.account-item {
-    display: flex;
-    align-items: center; /* Align image and text vertically centered */
-    justify-content: flex-start; /* Align the items horizontally */
-    padding: 0 15px; /* Ensure some padding inside */
-}
+        .account-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 15px;
+        }
 
-/* Image styling */
-img.img-thumbnail.img-fluid.shadow-sm {
-    width: 50px; /* Adjust size as needed */
-    height: 50px; /* Make sure it's not too tall */
-    border: 1px solid #dee2e6; /* Keep border */
-    border-radius: 50%; /* For circular avatar */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, .1); /* Subtle shadow */
-    padding: 2px; /* Optional: Padding inside the border */
-    margin-right: 10px; /* Space between image and account name */
-}
+        /* Image styling */
+        img.img-thumbnail.img-fluid.shadow-sm {
+            width: 40px !important; /* Set desired width */
+            height: 40px !important; /* Set desired height */
+            border: 1px solid #dee2e6;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+            padding: 2px;
+            margin-right: 10px;
+        }
 
-/* Account name styling */
-.account-item .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+        /* Account name styling */
+        .account-item .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-/* Account name alignment */
-.account-item .content a.js-acc-btn {
-    white-space: nowrap; /* Prevent text from wrapping to the next line */
-    overflow: hidden; /* Hide overflow if the name is too long */
-    text-overflow: ellipsis; /* Add ellipsis for long names */
-    font-size: 14px; /* Adjust font size */
-}
-
-
-
+        /* Account name alignment */
+        .account-item .content a.js-acc-btn {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 14px;
+        }
     </style>
 
 </head>
@@ -89,27 +86,22 @@ img.img-thumbnail.img-fluid.shadow-sm {
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
-                            <a class="js-arrow" href="{{route('shop#register')}}">
-                                <i class="fas fa-tachometer-alt"></i>Shop Lists
-                            </a>
-                        </li>
                         <li>
-                            <a href="{{route('category#list')}}">
-                                <i class="fas fa-chart-bar"></i>Category List</a>
+                            <a href="{{route('deliveryPerson#list')}}">
+                                <i class="fas fa-chart-bar"></i>Delivery Persons List</a>
                         </li>
                         <li>
                             <a href="{{route('order#list')}}">
                                 <i class="fas fa-circle"></i>Order List</a>
                         </li>
                         <li>
-                            <a href="{{route('admin#viewProducts')}}">
+                            <a href="{{route('products#list')}}">
                                <i class="fas fa-square"></i> Product Lists
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('admin#userList')}}">
-                               <i class="bi bi-people-fill"></i> Customter Lists
+                            <a href="{{route('shop#register')}}">
+                               <i class="fas fa-square"></i> Shop Registration
                             </a>
                         </li>
                     </ul>
@@ -136,7 +128,7 @@ img.img-thumbnail.img-fluid.shadow-sm {
                             </div>
                             <div class="account-wrap">
                                 <div class="account-item clearfix js-item-menu">
-                                    {{-- <div class="image">
+                                    <div class="image">
                                         @if (Auth::user()->image == null)
                                             @if (Auth::user()->gender == 'male')
                                                 <img src="{{ asset('image/default_user3.png' ) }}" class="img-thumbnail shadow-sm">
@@ -148,7 +140,7 @@ img.img-thumbnail.img-fluid.shadow-sm {
                                                 <img src="{{asset('storage/'.Auth::user()->image)}}" class="img-thumbnail shadow-sm" />
                                             </a>
                                         @endif
-                                    </div> --}}
+                                    </div>
                                     <div class="content">
                                         <a class="js-acc-btn" href="#">{{Auth::user()->name}}</a>
                                     </div>

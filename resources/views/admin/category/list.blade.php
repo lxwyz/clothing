@@ -142,7 +142,7 @@
                         </form>
                     </div>
             </div>
-
+            <br>
                 @if(count($categories)!=0)
                 <div class="table-responsive table-responsive-data2">
                     <table class="table table-data2">
@@ -151,6 +151,7 @@
                                 <th>ID</th>
                                 <th>Category Name</th>
                                 <th>Created Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>

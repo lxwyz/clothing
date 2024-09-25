@@ -21,7 +21,6 @@ class UserAuthMiddleware
         if (!Auth::check() || Auth::user()->role != 'user') {
             return abort(403, 'Unauthorized access.');
         }
-
         return $next($request);
     }
 }

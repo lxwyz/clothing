@@ -74,6 +74,17 @@
         </div>
     </div>
 </div>
+
+@if (Auth::check() && Auth::user()->role == 'shop_admin')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <a href="{{ route('shop_admin#dashboard') }}" class="btn btn-primary">Go to Shop Admin Dashboard</a>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="container-fluid">
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->

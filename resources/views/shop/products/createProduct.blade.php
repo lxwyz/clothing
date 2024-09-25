@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('shop.layouts.app')
 
 @section('title','Product List')
 
@@ -71,6 +71,17 @@
                                     {{$message}}
                                 </div>
                             @enderror
+                            <br>
+                            @if($shops->isEmpty())
+                                <p>No shops available. Please create a shop first.</p>
+                            @else
+                                <select name="shop_id" class="form-control" required>
+                                    @foreach ($shops as $shop)
+                                        <option value="{{ $shop->id }}" class="form-control">{{ $shop->name }}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                            </select>
                             <br>
                             <div class="d-flex justify-content-between">
                                 <a href="{{route('products#list')}}" class="btn btn-secondary">

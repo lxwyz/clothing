@@ -34,15 +34,15 @@ class DatabaseSeeder extends Seeder
             'gender' => 'male'
         ]);
 
-        //shop admin account
-        // User::create([
-        //     'name' => 'Tiffany',
-        //     'email' => 'admin@gmail.com',
-        //     'phone' => '09778342984',
-        //     'address' => 'Muse',
-        //     'role' => 'shop_admin',
-        //     'password' => Hash::make('admin123'),
-        //     'gender' => 'female'
-        // ]);
+
+        User::create([
+            'name' => 'Tiffany',
+            'email' => 'tiffany@gmail.com',
+            'phone' => '09778342984',
+            'address' => 'Muse',
+            'role' => 'shop_admin',
+            'password' => Hash::make('tiffany123'),
+            'gender' => 'female'
+        ]);
     }
 }

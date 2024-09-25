@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DeliveryPerson;
 
 class Order extends Model
 {
@@ -15,4 +16,7 @@ class Order extends Model
         'total_price',
         'status'
     ];
+    public function deliveryPerson(){
+        return $this->belongsTo(DeliveryPerson::class,'delivery_person_id');
+    }
 }

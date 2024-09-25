@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('shop.layouts.app')
 
 @section('title', 'Product List')
 
@@ -7,7 +7,7 @@
     <div class="section__content section__content--p30">
         <div class="container-fluid">
             <div class="header-wrap">
-                <h2>Admin Dashboard Panel</h2>
+                <h2>Shop Admin Dashboard Panel</h2>
                 <div class="header-button">
                     <div class="noti-wrap">
                         <div class="noti__item js-item-menu"></div>
@@ -31,9 +31,11 @@
                             <div class="account-dropdown js-dropdown">
                                 <div class="info clearfix">
                                     @if (Auth::user()->image == null)
-                                        <div class="image">
-                                            <img src="{{ asset('image/default_user3.png') }}" />
-                                        </div>
+                                        @if (Auth::user()->gender == 'male')
+                                            <img src="{{ asset('image/default_user3.png' ) }}" class="img-thumbnail shadow-sm">
+                                        @else
+                                            <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail shadow-sm">
+                                        @endif
                                     @else
                                         <div class="image">
                                             <a href="#">
@@ -95,24 +97,21 @@
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
                         <div class="overview-wrap">
-                            <h2 class="title-1">Product Lists</h2>
+                            <h2 class="title-1">Delivery Person Lists</h2>
                         </div>
                     </div>
                     <div class="table-data__tool-right">
-                        {{-- <a href="{{ route('products#createPage') }}">
+                        <a href="{{ route('deliveryPerson#create') }}">
                             <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                <i class="zmdi zmdi-plus"></i>Add Products
+                                <i class="zmdi zmdi-plus"></i>Register Delivery Person
                             </button>
-                        </a> --}}
-                        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                            CSV download
-                        </button>
+                        </a>
                     </div>
                 </div>
 
-                @if(session('createSuccess'))
+                @if(session('success'))
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <i class="bi bi-check-lg"></i>{{ session('createSuccess') }}
+                        <i class="bi bi-check-lg"></i>{{ session('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
@@ -128,8 +127,9 @@
                     <div class="col-3">
                         <h4 class="text-secondary">Search Key: <span class="text-danger">{{ request('key') }}</span></h4>
                     </div>
+
                     <div class="col-3 offset-9">
-                        <form action="{{ route('products#list') }}" method="GET">
+                        <form action="{{ route('deliveryPerson#list') }}" method="GET">
                             @csrf
                             <div class="d-flex ">
                                 <input type="text" name="key" class="form-control mt-0" placeholder="Search..." value="{{ request('key') }}">
@@ -142,64 +142,68 @@
                 </div>
                 <br>
 
-            @if (count($products) != 0)
+
             <div class="table-responsive table-responsive-data2">
                 <table class="table table-data2">
                     <thead>
                         <tr>
                             <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Description</th>
-                            <th>Created At</th>
-                            <th>Price</th>
-                            <th>Category Name</th>
-                            <th>View Count</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Gender</th>
                             <th>Actions</th><!-- Added view_count header -->
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
+                        @foreach($deliveryPersons as $dP)
+                        <tr class="tr-shadow my-2">
                             <tr class="tr-shadow my-2">
-                                <td>
-                                    <img src="{{ asset('storage/' . $product->image) }}" style="width: 100px;">
+                                <td class="col-1">
+                                    @if ($dP->image == null)
+                                       @if ($dP->gender == 'male')
+                                            <img src="{{ asset('image/default_user3.png' ) }}" class=" shadow-sm">
+                                       @else
+                                           <img src="{{asset('image/placeholder-female.jpg')}}" class=" shadow-sm">
+                                       @endif
+                                    @else
+                                        <img src="{{ asset('storage/'.$dP->image) }}" class=" shadow-sm">
+                                    @endif
                                 </td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>{{ $product->created_at->format('j-F-y') }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>{{ $product->category_name }}</td>
-                                <td>{{ $product->view_count }}</td> <!-- Display view_count -->
-                                <td>
-                                    <div class="table-data-feature">
-                                        <a href="{{ route('products#edit', $product->id) }}">
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="View">
-                                                <i class="bi bi-view-list"></i>
-                                            </button>
-                                        </a>
-                                        <a href="{{ route('products#updatePage', $product->id) }}">
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                <i class="fas fa-pen-square"></i>
-                                            </button>
-                                        </a>
-                                        <a href="{{ route('products#delete', $product->id) }}">
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                            <td>{{$dP->name}}</td>
+                            <td>{{$dP->email}}</td>
+                            <td>{{$dP->phone}}</td>
+                            <td>{{$dP->address}}</td>
+                            <td>{{$dP->gender}}</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <a href="{{ route('deliveryPerson#view', $dP->id) }}">
+                                        <button class="item" data-toggle="tooltip" data-placement="top" title="View">
+                                            <i class="bi bi-view-list"></i>
+                                        </button>
+                                    </a>
+                                    <a href="{{ route('deliveryPerson#edit', $dP->id) }}">
+                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <i class="fas fa-pen-square"></i>
+                                        </button>
+                                    </a>
+                                    <form action="{{ route('deliveryPerson#delete', $dP->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this delivery person? This action cannot be undone.');" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <!-- Pagination Links -->
                 <div class="mt-3">
-                    {{ $products->links() }}
+                    {{ $deliveryPersons->links() }}
                 </div>
             </div>
-            @else
-                <h3 class="text-secondary text-center mt-5">There are No Products</h3>
-            @endif
             </div>
         </div>
     </div>

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+//
 use Illuminate\Support\Facades\Hash;
 
 
@@ -25,17 +26,18 @@ class AuthController extends Controller
     //direct dashboard
     public function dashboard(){
         if (Auth::check()) {
-            // Check the role of the authenticated user
             if (Auth::user()->role == 'admin') {
-                return redirect()->route('category#list'); // Adjust this route as needed
+                return redirect()->route('category#list');
+            }else if(Auth::user()->role == 'shop_admin'){
+                return redirect()->route('products#list');
             }
             else {
-                return redirect()->route('user#home'); // Adjust this route as needed
+                return redirect()->route('user#home');
             }
         }
 
         return redirect()->route('auth#loginPage');
     }
+    }
 
 
-}

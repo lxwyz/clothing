@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\AjaxController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\DeliveryPersonController;
 use App\Models\Product;
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,9 @@ use App\Models\Product;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+
 Route::middleware(['admin_auth'])->group(function(){
     Route::redirect('/','loginPage');
 
@@ -28,22 +32,48 @@ Route::middleware(['admin_auth'])->group(function(){
 
 });
 
-
-
-
-
-
 Route::middleware(['auth'])->group(function () {
 
     //dashboard
     Route::get('dashboard',[AuthController::class,'dashboard'])->name('dashboard');
 
+    Route::group(['middleware'=>'shop_auth'],function(){
+        Route::prefix('products')->group(function(){
+            Route::get('list',[ProductController::class,'list'])->name('products#list');
+            Route::get('create/page',[ProductController::class,'createPage'])->name('products#createPage');
+            Route::post('create',[ProductController::class,'create'])->name('products#create');
+            Route::get('delete/{id}', [ProductController::class, 'delete'])->name('products#delete');
+            Route::get('edit/{id}', [ProductController::class, 'edit'])->name('products#edit');
+            Route::get('updatePage/{id}',[ProductController::class,'updatePage'])->name('products#updatePage');
+            Route::post('update/{id}',[ProductController::class, 'update'])->name('products#update');
+        });
+
+        // Registration for Shops
+        Route::prefix('shops')->group(function(){
+            Route::get('register',[ShopController::class,'registerPage'])->name('shop#register');
+            Route::post('shop/storeData',[ShopController::class,'store'])->name('shop#store');
+        });
 
 
+        //Shop admin be able to register the delivery person data
+        Route::prefix('deliveryPersons')->group(function(){
+            Route::get('list',[DeliveryPersonController::class,'list'])->name('deliveryPerson#list');
+            Route::get('create', [DeliveryPersonController::class, 'create'])->name('deliveryPerson#create');
+            Route::post('store',[DeliveryPersonController::class,'store'])->name('deliveryPerson#store');
+            Route::get('/delivery-person/view/{id}', [DeliveryPersonController::class, 'view'])->name('deliveryPerson#view');
+            Route::get('edit/{id}',[DeliveryPersonController::class,'edit'])->name('deliveryPerson#edit');
+            Route::get('delete/{id}',[DeliveryPersonController::class,'delete'])->name('deliveryPerson#delete');
+            Route::post('update/{id}',[DeliveryPersonController::class,'update'])->name('deliveryPerson#update');
+            Route::delete('delete/{id}',[DeliveryPersonController::class,'delete'])->name('deliveryPerson#delete');
+        });
+    });
 
     //admin
     Route::middleware(['admin_auth'])->group(function(){
-
+        // be able to view all the products
+        Route::prefix('products')->group(function(){
+            Route::get('view',[ProductController::class,'view'])->name('admin#viewProducts');
+        });
     //category
     Route::prefix('category')->group(function(){
         Route::get('list',[CategoryController::class,'list'])->name('category#list');
@@ -63,16 +93,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('changeRole/{id}',[AdminController::class,'changeRole'])->name('admin#changeRole');
         Route::post('change/role/{id}',[AdminController::class,'change'])->name('admin#change');
     });
+
       //Products' Routes
-      Route::prefix('products')->group(function(){
-        Route::get('list',[ProductController::class,'list'])->name('products#list');
-        Route::get('create/page',[ProductController::class,'createPage'])->name('products#createPage');
-        Route::post('create',[ProductController::class,'create'])->name('products#create');
-        Route::get('delete/{id}', [ProductController::class, 'delete'])->name('products#delete');
-        Route::get('edit/{id}', [ProductController::class, 'edit'])->name('products#edit');
-        Route::get('updatePage/{id}',[ProductController::class,'updatePage'])->name('products#updatePage');
-        Route::post('update/{id}',[ProductController::class, 'update'])->name('products#update');
-    });
+
 
     Route::prefix('user')->group(function(){
         Route::get('userList',[UserController::class,'userList'])->name('admin#userList');
@@ -101,11 +124,9 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    //shop admin
 
-    // Route::group(['prefix'=>'shop','middleware'=>'shop_auth'],function(){
 
-    // });
+
 
 
     //user home.

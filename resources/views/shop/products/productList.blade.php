@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('shop.layouts.app')
 
 @section('title', 'Product List')
 
@@ -7,7 +7,7 @@
     <div class="section__content section__content--p30">
         <div class="container-fluid">
             <div class="header-wrap">
-                <h2>Admin Dashboard Panel</h2>
+                <h2>Shop Admin Dashboard Panel</h2>
                 <div class="header-button">
                     <div class="noti-wrap">
                         <div class="noti__item js-item-menu"></div>
@@ -31,9 +31,11 @@
                             <div class="account-dropdown js-dropdown">
                                 <div class="info clearfix">
                                     @if (Auth::user()->image == null)
-                                        <div class="image">
-                                            <img src="{{ asset('image/default_user3.png') }}" />
-                                        </div>
+                                        @if (Auth::user()->gender == 'male')
+                                            <img src="{{ asset('image/default_user3.png' ) }}" class="img-thumbnail shadow-sm">
+                                        @else
+                                            <img src="{{asset('image/placeholder-female.jpg')}}" class="img-thumbnail shadow-sm">
+                                        @endif
                                     @else
                                         <div class="image">
                                             <a href="#">
@@ -99,11 +101,11 @@
                         </div>
                     </div>
                     <div class="table-data__tool-right">
-                        {{-- <a href="{{ route('products#createPage') }}">
+                        <a href="{{ route('products#createPage') }}">
                             <button class="au-btn au-btn-icon au-btn--green au-btn--small">
                                 <i class="zmdi zmdi-plus"></i>Add Products
                             </button>
-                        </a> --}}
+                        </a>
                         <button class="au-btn au-btn-icon au-btn--green au-btn--small">
                             CSV download
                         </button>

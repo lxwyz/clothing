@@ -1,7 +1,7 @@
 
-@extends('admin.layouts.app')
+@extends('shop.layouts.app')
 
-@section('title','Category List')
+@section('title','Delivery Person Account Edition')
 
 
 @section('content')
@@ -79,16 +79,16 @@
                                 </div>
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
-                                        <a href="{{route('admin#list')}}">
-                                            <i class="zmdi zmdi-accounts"></i>Admin List</a>
+                                        <a href="{{route('deliveryPerson#list')}}">
+                                            <i class="zmdi zmdi-accounts"></i>Delivery Person List</a>
                                     </div>
                                 </div>
-                                <div class="account-dropdown__body">
+                                {{-- <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
                                         <a href="{{route('admin#changePasswordPage')}}">
                                             <i class="bi bi-key"></i>Change Password</a>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="account-dropdown__footer my-3">
                                     <form action="{{route('logout')}}" method="post" class="d-flex justify-content-center">
                                         @csrf
@@ -117,17 +117,25 @@
             <div class="col-lg-6 offset-3">
                 <div class="card">
                     <div class="card-body">
+                        @if(session('success'))
+                            <div >
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <i class="bi bi-check-lg"></i>{{session('success')}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        @endif
                         <div class="card-title">
                             <h3 class="password-center title-2 text-center">Account Profile</h3>
                         </div>
                         <hr>
-                        <form action="{{route('admin#update',Auth::user()->id)}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('deliveryPerson#update',$deliveryPerson->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <!-- Profile Picture -->
                                 <div class="col-4 offset-1">
-                                    @if (Auth::user()->image == null)
-                                        @if (Auth::user()->gender == 'female')
+                                    @if ($deliveryPerson->image == null)
+                                        @if ($deliveryPerson->gender == 'female')
                                             <div class="image">
                                                 <img src="{{ asset('image/placeholder-female.jpg') }}" />
                                             </div>
@@ -138,7 +146,7 @@
                                         @endif
                                     @else
                                         <a href="#">
-                                            <img src="{{asset('storage/'.Auth::user()->image)}}" class="img-thumbnail shadow-sm" />
+                                            <img src="{{asset('storage/'.$deliveryPerson->image)}}" class="img-thumbnail shadow-sm" />
                                         </a>
                                     @endif
                                     <div class="mt-3">
@@ -154,21 +162,21 @@
                                 <div class="row col-6">
                                     <div class="form-group">
                                         <label class="control-label mb-1">Name</label>
-                                        <input name="name" type="text" value="{{old('name',Auth::user()->name)}}" class="form-control" aria-required="true" aria-invalid="false" placeholder="Enter Your Name">
+                                        <input name="name" type="text" value="{{old('name',$deliveryPerson->name)}}" class="form-control" aria-required="true" aria-invalid="false" placeholder="Enter Your Name">
                                     </div>
                                     @error('name')
                                         <div class="text-danger">{{$message}}</div>
                                     @enderror
                                     <div class="form-group">
                                         <label class="control-label mb-1">Email</label>
-                                        <input name="email" type="email" class="form-control" value="{{old('email',Auth::user()->email)}}" aria-required="true" aria-invalid="false" placeholder="Enter Your Email">
+                                        <input name="email" type="email" class="form-control" value="{{old('email',$deliveryPerson->email)}}" aria-required="true" aria-invalid="false" placeholder="Enter Your Email">
                                     </div>
                                     @error('email')
                                         <div class="text-danger">{{$message}}</div>
                                     @enderror
                                     <div class="form-group">
                                         <label class="control-label mb-1">Address</label>
-                                        <textarea name="address" id="" cols="30" rows="10" class="form-control">{{old('address',Auth::user()->address)}}</textarea>
+                                        <textarea name="address" id="" cols="30" rows="10" class="form-control">{{old('address',$deliveryPerson->address)}}</textarea>
                                     </div>
                                     @error('address')
                                         <div class="text-danger">{{$message}}</div>
@@ -177,8 +185,8 @@
                                         <label for="Gender">Gender</label>
                                         <select name="gender" id="" class="form-control">
                                             <option value="">Choose Gender</option>
-                                            <option value="male" @if (Auth::user()->gender == 'male') selected @endif>Male</option>
-                                            <option value="female" @if (Auth::user()->gender == 'female') selected @endif>Female</option>
+                                            <option value="male" @if ($deliveryPerson->gender == 'male') selected @endif>Male</option>
+                                            <option value="female" @if ($deliveryPerson->gender == 'female') selected @endif>Female</option>
                                         </select>
                                         @error('gender')
                                             <div class="text-danger">{{$message}}</div>
@@ -186,16 +194,22 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label mb-1">Phone</label>
-                                        <input name="phone" type="text" class="form-control" value="{{old('phone',Auth::user()->phone)}}" aria-required="true" aria-invalid="false" placeholder="Enter Your Phone">
+                                        <input name="phone" type="text" class="form-control" value="{{old('phone',$deliveryPerson->phone)}}" aria-required="true" aria-invalid="false" placeholder="Enter Your Phone">
                                     </div>
                                         @error('gender')
                                             <div class="text-danger">{{$message}}</div>
                                         @enderror
-                                    <div class="form-group">
-                                        <label class="control-label mb-1">Role</label>
-                                        <input name="role" type="text" class="form-control" value="{{old('role',Auth::user()->role)}}" aria-required="true" aria-invalid="false" disabled>
-                                    </div>
-                                    <a href="{{route('admin#details')}}" class="btn btn-default">Back</a>
+                                    <br>
+                                        <div class="form-group">
+                                            <label class="control-label mb-1">Password</label>
+                                            <input id="cc-pament" name="deliveryPersonPassword" type="password" value="{{ old('deliveryPersonPassword',$deliveryPerson->password) }}" class="form-control @error('deliveryPersonPassword') is-invalid @enderror" placeholder="Enter Password" aria-required="true" aria-invalid="false">
+                                            @error('deliveryPersonPassword')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    <a href="{{route('deliveryPerson#list')}}" class="btn btn-default">Back</a>
                                 </div>
                             </div>
                         </form>
@@ -207,3 +221,4 @@
     </div>
 </div>
 @endsection
+
