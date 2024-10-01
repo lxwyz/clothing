@@ -158,7 +158,7 @@
                         </div>
                         <div class="row">
                             <div class="col-4 offset-2 mt-3">
-                               <a href="">
+                               <a href="{{route('deliveryPerson#edit',$deliveryPerson->id)}}">
                                     <button class="btn bg-dark text-white">
                                         <i class="bi bi-pencil-square"></i> Edit Profile
                                     </button>

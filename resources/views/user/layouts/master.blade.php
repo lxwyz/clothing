@@ -9,6 +9,8 @@
     <meta content="Free HTML Templates" name="description">
 
 
+
+
     <!-- Favicon -->
     {{-- <link href="{{asset('user/img/favicon.ico')}}" rel="icon"> --}}
 

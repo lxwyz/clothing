@@ -9,10 +9,7 @@ class Shop extends Model
 {
     use HasFactory;
     protected $fillable= [
-        'name',
-        'address',
-        'phone',
-        'user_id',
+        'name', 'address', 'phone', 'email', 'password', 'user_id',
     ];
 
     public function deliveryPerson(){

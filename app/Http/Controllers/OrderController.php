@@ -9,19 +9,26 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    //order page
 
-    public function list(){
-        $orders =  Order::select('orders.*','users.name as user_name')
-                          ->when(request('key'),function($query){
-                            $query->where('orders.order_code','like','%'.request('key').'%');
-                          })
-                          ->leftJoin('users','users.id','orders.user_id')
-                          ->orderBy('orders.created_at','asc')
-                          ->paginate(3);
-        // dd($orders->toArray());
-        return view('admin.order.list',compact('orders'));
+    public function assignDeliveryPerson(Request $request, $orderId){
+        $order = Order::findOrFail($orderId);
+        $order->delivery_person_id = $request->delivery_person_id;
+        $order->save();
+        return redirect()->back()->with('success', 'Delivery  Person Assigned Successfully');
     }
+
+    //order page
+    public function list(){
+
+        $orders =  Order::select('orders.*','users.name as user_name')
+        ->when(request('key'),function($query){
+          $query->where('orders.order_code','like','%'.request('key').'%');
+        })
+        ->leftJoin('users','users.id','orders.user_id')
+        ->orderBy('orders.created_at','asc')
+        ->paginate(3);
+    return view('admin.order.list',compact('orders'));
+ }
 
 
     public function ajaxStatus(Request $request){
@@ -57,6 +64,9 @@ class OrderController extends Controller
                     ->leftJoin('products','products.id','order_lists.product_id')
                     ->where('order_code',$orderCode)
                     ->get();
-        return view('admin.order.productList',compact('orderList','order'));
+
+
+        $deliveryPeople = DeliveryPerson::all();
+        return view('admin.order.productList',compact('orderList','order','deliveryPeople'));
     }
 }

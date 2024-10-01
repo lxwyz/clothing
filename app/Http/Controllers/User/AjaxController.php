@@ -24,9 +24,10 @@ class AjaxController extends Controller
 
 
     public function order(Request $request){
+        $total = 0;
         foreach($request->orders as $item){
             // logger($item);
-            $total = 0;
+
             $data = OrderList::create([
                 'user_id' => $item['user_id'],
                 'product_id' => $item['product_id'],

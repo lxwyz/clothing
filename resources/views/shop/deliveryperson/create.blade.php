@@ -78,8 +78,9 @@
                                 <p>No shops available. Please create a shop first.</p>
                             @else
                                 <select name="shop_id" class="form-control" required>
+                                    <option value=>Select A Shop</option>
                                     @foreach ($shops as $shop)
-                                        <option value=>Select A Shop</option>
+
                                         <option value="{{ $shop->id }}" class="form-control">{{ $shop->name }}</option>
                                     @endforeach
                                 </select>

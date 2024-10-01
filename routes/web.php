@@ -51,7 +51,7 @@ Route::middleware(['auth'])->group(function () {
         // Registration for Shops
         Route::prefix('shops')->group(function(){
             Route::get('register',[ShopController::class,'registerPage'])->name('shop#register');
-            Route::post('shop/storeData',[ShopController::class,'store'])->name('shop#store');
+            Route::post('/shop/store',[ShopController::class,'store'])->name('shop#store');
         });
 
 
@@ -62,9 +62,12 @@ Route::middleware(['auth'])->group(function () {
             Route::post('store',[DeliveryPersonController::class,'store'])->name('deliveryPerson#store');
             Route::get('/delivery-person/view/{id}', [DeliveryPersonController::class, 'view'])->name('deliveryPerson#view');
             Route::get('edit/{id}',[DeliveryPersonController::class,'edit'])->name('deliveryPerson#edit');
-            Route::get('delete/{id}',[DeliveryPersonController::class,'delete'])->name('deliveryPerson#delete');
             Route::post('update/{id}',[DeliveryPersonController::class,'update'])->name('deliveryPerson#update');
             Route::delete('delete/{id}',[DeliveryPersonController::class,'delete'])->name('deliveryPerson#delete');
+        });
+
+        Route::prefix('order')->group(function(){
+            Route::get('shopOrders',[OrderController::class,'list'])->name('shopOrder#list');
         });
     });
 
@@ -107,6 +110,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ajax/status',[OrderController::class,'ajaxStatus'])->name('order#ajaxStatus');
         Route::get('ajax/status/change',[OrderController::class,'ajaxChangeStatus'])->name('order#ajaxStatusChange');
         Route::get('listInfo/{ordercode}',[OrderController::class,'listInfo'])->name('order#listInfo');
+        Route::put('/orders/{id}/assign-deliveryPerson',[OrderController::class,'assignDeliveryPerson'])->name('order#assignDeliveryPerson');
+
 
     });
 
@@ -160,7 +165,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('product/list',[AjaxController::class,'productList'])->name('ajax#productList');
             Route::post('cart',[AjaxController::class,'addToCart'])->name('ajax#addToCart');
             Route::get('increase/viewCount',[AjaxController::class,'increaseViewCount'])->name('ajax#increaseViewCount');
-            Route::get('order',[AjaxController::class,'order'])->name('ajax#order');
+            Route::post('order',[AjaxController::class,'order'])->name('ajax#order');
             Route::get('clear/cart',[AjaxController::class,'clearCart'])->name('ajax#clearCart');
             Route::get('remove/cart',[AjaxController::class,'removeCart'])->name('ajax#removeCart');
         });

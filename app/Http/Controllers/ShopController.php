@@ -20,6 +20,8 @@ class ShopController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15',
+            'email' => 'required|string|email|max:255|unique:shops',
+            'password' => 'required|string|min:8|confirmed',
 
         ]);
 
@@ -28,6 +30,8 @@ class ShopController extends Controller
             'name' => $validatedData['name'],
             'address' => $validatedData['address'],
             'phone' => $validatedData['phone'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']), // Hash the password before storing it in the database
             'user_id' => Auth::id(), // Assuming you want to link the shop to the currently logged-in user
         ]);
 

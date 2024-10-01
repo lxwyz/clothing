@@ -30,14 +30,21 @@ return [
     // 'max_age' => 0,
 
     // 'supports_credentials' => false,
-    'paths' => ['api/*', 'user/*'], // Adjust this to include your custom routes like /user/ajax/*
-    'allowed_methods' => ['*'], // Allow all HTTP methods
-    'allowed_origins' => ['http://localhost:8000'], // Add the frontend origin (http://localhost:8000 in your case)
+    'paths' => ['api/*', 'user/ajax/order'], // Define your API or AJAX route here
+
+    'allowed_methods' => ['*'], // Allow all methods (GET, POST, PUT, DELETE)
+
+    'allowed_origins' => ['*'], // You can limit this to certain domains if needed, e.g. ['http://localhost:3000']
+
     'allowed_origins_patterns' => [],
+
     'allowed_headers' => ['*'], // Allow all headers
-    'exposed_headers' => false,
+
+    'exposed_headers' => [],
+
     'max_age' => 0,
-    'supports_credentials' => true,
+
+    'supports_credentials' => false,
 
 ];
 

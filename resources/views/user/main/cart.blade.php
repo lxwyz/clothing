@@ -23,7 +23,7 @@
                     @foreach ($cartList as $c)
                     <tr>
                         <td class="align-middle">
-                            <img src="img/{{asset('storage/'.$c->product_image)}}" alt="" style="width: 50px;">
+                            <img src="{{asset('storage/'.$c->product_image)}}" alt="" style="width: 50px;">
                             {{$c->product_name}}
                             <input type="hidden" class="productId" value="{{$c->product_id}}">
                             <input type="hidden" class="userId" value="{{$c->user_id}}">
@@ -73,6 +73,7 @@
                         <h5 id="total">{{$totalPrice + 3000}}</h5>
                     </div>
                     <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" id="orderBtn">Proceed To Checkout</button> <br>
+
                     <button class="btn btn-block btn-danger font-weight-bold my-3 py-3" id="clearBtn">Clear Cart</button>
                 </div>
             </div>
@@ -81,135 +82,100 @@
 </div>
 @endsection
 @section('scriptSource')
-
 <script>
 $(document).ready(function () {
-    // Handling the Plus Button
-    $('.btn-plus').click(function () {
-        var row = $(this).closest('tr'); // Find the closest table row
-        var qtyInput = row.find('.qty-input'); // Target the quantity input in this row
-        var quantity = parseInt(qtyInput.val());  // Get the current quantity
-        qtyInput.val(quantity + 1);  // Increment and update the value
-
-        // Update the total price for the row
-        updateRowTotal(row);
-    });
-
-    // Handling the Minus Button
-    $('.btn-minus').click(function () {
-        var row = $(this).closest('tr'); // Find the closest table row
-        var qtyInput = row.find('.qty-input'); // Target the quantity input in this row
-        var quantity = parseInt(qtyInput.val());  // Get the current quantity
-        if (quantity > 1) {
-            qtyInput.val(quantity - 1);  // Decrement and update the value
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-
-        // Update the total price for the row
-        updateRowTotal(row);
     });
 
-    // // Handle Remove Button
-    // $('.btn-danger').click(function () {
-    //     var row = $(this).closest('tr'); // Find the closest table row
-    //     row.remove(); // Remove the row from the table
+    // Your other button handling code...
 
-    //     // Update the cart summary after removing the item
-    //     updateCartSummary();
-    // });
+    // Clear Cart
+    $(document).on('click', '#clearBtn', function() {
+        $.ajax({
+            type: 'GET',
+            url: '{{route('ajax#clearCart')}}',
+            dataType: 'json',
+            success: function(response) {
+                if(response.status == 'true') {
+                    $('#dataTable tbody tr').remove();
+                    $('#subtotal').text('0 Kyats');
+                    $('#total').text('3000 Kyats');
+                    alert('Cart cleared successfully.');
+                } else {
+                    alert('Failed to clear the cart.');
+                }
+            },
+            error: function() {
+                alert('Error clearing the cart.');
+            }
+        });
+    });
 
-    // Handling the Proceed to Checkout button click
-    $('#orderBtn').click(function(){
+    // Remove Item
+    $(document).on('click', '.btn-danger', function() {
+        var button = $(this);
+        var row = button.closest('tr');
+        var productId = button.data('id');
+
+        $.ajax({
+            type: 'GET',
+            url: '{{ route('ajax#removeCart') }}',
+            data: { product_id: productId },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status == 'true') {
+                    row.remove();
+                    updateCartSummary();
+                    alert('Item removed from cart successfully.');
+                } else {
+                    alert('Failed to remove the item from the cart.');
+                }
+            },
+            error: function() {
+                alert('Error removing the item from the cart.');
+            }
+        });
+    });
+
+    // Proceed to Checkout
+    $(document).on('click', '#orderBtn', function() {
         var orderList = [];
-
-        $('#dataTable tbody tr').each(function(index, row){
-            var randomCode = Math.floor(Math.random() * 10000001); // Generate random order code
-
-            // Prepare each order item data
+        $('#dataTable tbody tr').each(function(index, row) {
+            var randomCode = Math.floor(Math.random() * 10000001);
             var orderItem = {
                 'user_id': $(row).find('.userId').val(),
                 'product_id': $(row).find('.productId').val(),
                 'Qty': $(row).find('.qty-input').val(),
                 'total_amount': parseFloat($(row).find('.total-price').text().replace(' Kyats', '')),
-                'order_code': 'POS' + randomCode
+                'order_code': 'POS' + randomCode,
             };
-
-            orderList.push(orderItem); // Add the order item to the orderList array
+            orderList.push(orderItem);
         });
 
-        // Ensure the orderList array has data before making the AJAX call
         if (orderList.length > 0) {
-            // AJAX POST Request to submit order data
             $.ajax({
-                type: 'get',
-                url: 'http://localhost:8000/user/ajax/order',  // Ensure this matches your Laravel route
-                data: { orders: orderList }, // Send the orderList data
+                type: 'POST',
+                url: '{{route('ajax#order')}}',
+                data: { orders: orderList },
                 dataType: 'json',
-                success: function(response){
-                    // Handle success response
-                    // console.log(response);
-                    // alert('Order placed successfully.');
-                    if(response.status == 'true'){
-                        window.location.href = 'http://localhost:8000/user/home';
+                success: function(response) {
+                    if(response.status == 'true') {
+                        location.reload();
                     }
+                },
+                error: function(jqXHR) {
+                    console.error('Error:', jqXHR.status, jqXHR.statusText);
                 },
             });
         } else {
             alert("No items in the cart!");
         }
     });
-    //function to clear cart
-
-    $('#clearBtn').click(function() {
-        $.ajax({
-            type: 'GET',
-            url: '{{route('ajax#clearCart')}}',  // Ensure this matches your Laravel route
-            dataType: 'json',
-            success: function(response) {
-                if(response.status == 'true') {  // Assuming the server returns a status of 'true'
-                    $('#dataTable tbody tr').remove();  // Clear cart items in the UI
-                    $('#subtotal').text('0 Kyats');  // Reset subtotal
-                    $('#total').text('3000 Kyats');  // Assuming shipping cost remains
-
-                    alert('Cart cleared successfully.');  // Optional: Show a success message
-                } else {
-                    alert('Failed to clear the cart.');  // In case of any failure
-                }
-            },
-            error: function() {
-                alert('Error clearing the cart.');  // In case of AJAX error
-            }
-        });
-    });
-    $('.btn-danger').click(function(){
-        var button = $(this);
-        var row = button.closest('tr'); // Fixed typo
-        var productId = button.data('id'); // Correctly get the product ID
-
-        $.ajax({
-            type: 'GET',
-            url: 'http://localhost:8000/user/ajax/remove/cart',  // Ensure this matches your Laravel route
-            data: { product_id: productId }, // Send the product ID to be removed
-            dataType: 'json',
-            success: function(response){
-                if(response.status == 'true') {  // Assuming the server returns a status of 'true'
-                    row.remove();  // Remove the row from the table
-                    updateCartSummary();  // Update the cart summary
-                    alert('Item removed from cart successfully.');  // Optional: Show a success message
-                } else {
-                    alert('Failed to remove the item from the cart.');  // In case of any failure
-                }
-            },
-            error: function() {
-                alert('Error removing the item from the cart.');  // In case of AJAX error
-            }
-        });
-        $.ajaxSetup({
-            headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-    });
-
 });
+
 
 });
 
