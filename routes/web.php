@@ -67,7 +67,8 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('order')->group(function(){
-            Route::get('shopOrders',[OrderController::class,'list'])->name('shopOrder#list');
+            Route::get('shopOrders',[OrderController::class,'shopOrders'])->name('shopOrder#list');
+            // Route::get('shopOrders',[OrderController::class,'list'])->name('shopOrder#list');
         });
     });
 
@@ -140,6 +141,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/filter/{id}',[UserController::class,'filter'])->name("user#filter");
         Route::get('details/{id}',[UserController::class,'detailsPage'])->name('user#detailsPage');
         Route::get('/history',[UserController::class,'historyPage'])->name('user#historyPage');
+        Route::post('user/checkout',[UserController::class,'checkout'])->name('user#checkout');
 
 
         Route::prefix('password')->group(function(){
@@ -165,8 +167,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('product/list',[AjaxController::class,'productList'])->name('ajax#productList');
             Route::post('cart',[AjaxController::class,'addToCart'])->name('ajax#addToCart');
             Route::get('increase/viewCount',[AjaxController::class,'increaseViewCount'])->name('ajax#increaseViewCount');
-            Route::post('order',[AjaxController::class,'order'])->name('ajax#order');
-            Route::get('clear/cart',[AjaxController::class,'clearCart'])->name('ajax#clearCart');
+            // Route::post('order',[AjaxController::class,'order'])->name('ajax#order');
+            Route::get('ajax/clear/cart',[AjaxController::class,'clearCart'])->name('ajax#clearCart');
             Route::get('remove/cart',[AjaxController::class,'removeCart'])->name('ajax#removeCart');
         });
        });

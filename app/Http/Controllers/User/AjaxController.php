@@ -23,33 +23,33 @@ class AjaxController extends Controller
 
 
 
-    public function order(Request $request){
-        $total = 0;
-        foreach($request->orders as $item){
-            // logger($item);
+    // public function checkout(Request $request){
+    //     $total = 0;
+    //     foreach($request->orders as $item){
+    //         // logger($item);
 
-            $data = OrderList::create([
-                'user_id' => $item['user_id'],
-                'product_id' => $item['product_id'],
-                'Qty' => $item['Qty'],
-                'total_amount' => $item['total_amount'],
-                'order_code' => $item['order_code'],
-            ]);
+    //         $data = OrderList::create([
+    //             'user_id' => $item['user_id'],
+    //             'product_id' => $item['product_id'],
+    //             'Qty' => $item['Qty'],
+    //             'total_amount' => $item['total_amount'],
+    //             'order_code' => $item['order_code'],
+    //         ]);
 
-            $total += $data->total_amount;
-        }
-        Cart::where('user_id',Auth::user()->id)->delete();
-        Order::create([
-            'user_id' =>Auth::user()->id,
-            'order_code' => $data->order_code,
-            'total_price' => $total
-        ]);
-        $response = [
-           'message' => 'Order placed successfully.',
-           'status' => 'true',
-        ];
-        return response()->json($response,200);
-    }
+    //         $total += $data->total_amount;
+    //     }
+    //     Cart::where('user_id',Auth::user()->id)->delete();
+    //     Order::create([
+    //         'user_id' =>Auth::user()->id,
+    //         'order_code' => $data->order_code,
+    //         'total_price' => $total
+    //     ]);
+    //     $response = [
+    //        'message' => 'Order placed successfully.',
+    //        'status' => 'true',
+    //     ];
+    //     return response()->json($response,200);
+    // }
 
 
     public function addToCart(Request $request){

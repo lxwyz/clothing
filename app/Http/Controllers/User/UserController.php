@@ -12,11 +12,60 @@ use App\Models\Cart;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\OrderList;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function checkout(Request $request) {
+        $cartItems = Cart::where('user_id', Auth::user()->id)->get();
+
+        // Check if the cart is empty
+        if ($cartItems->isEmpty()) {
+            return response()->json(['status' => 'false', 'message' => 'Your cart is empty.'], 400);
+        }
+
+        $total = 0;
+        $orderCode = Str::random(10);  // Generate a single order code for the order
+
+        foreach ($cartItems as $item) {
+            $product = Product::find($item['product_id']);  // Fetch product details
+
+            if (!$product) {
+                return response()->json(['status' => 'false', 'message' => 'Product not found.'], 404);
+            }
+
+            // Calculate total amount for each product (price * quantity)
+            $totalAmount = $product->price * $item['Qty'];
+
+            // Insert order list item
+            OrderList::create([
+                'user_id' => $item['user_id'],
+                'product_id' => $item['product_id'],
+                'Qty' => $item['Qty'],
+                'total_amount' => $totalAmount,
+                'order_code' => $orderCode,
+            ]);
+
+            // Add the item's total amount to the overall total
+            $total += $totalAmount;
+        }
+
+        // Clear the user's cart after the order is placed
+        Cart::where('user_id', Auth::user()->id)->delete();
+
+        // Create the main order with the total price
+        Order::create([
+            'user_id' => Auth::user()->id,
+            'order_code' => $orderCode,  // Reuse the same order code for the main order
+            'total_price' => $total,
+        ]);
+
+        return response()->json(['status' => 'true', 'message' => 'Order placed successfully.']);
+    }
+
     //user chanege role
     public function ajaxUserChangeStatus(Request $request){
         User::where('id',$request->userId)->update([

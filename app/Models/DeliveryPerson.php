@@ -19,19 +19,13 @@ class DeliveryPerson extends Model
         'gender',
         'phone',
         'image',
-        'shop_id',
         'user_id',
         'password',
     ];
-    public function shop()
-    {
-        return $this->belongsTo(Shop::class);
-    }
-
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
+
 
     public function orders(){
         return $this->hasMany(Order::class,'delivery_person_id');

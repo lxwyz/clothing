@@ -9,10 +9,21 @@ class Shop extends Model
 {
     use HasFactory;
     protected $fillable= [
-        'name', 'address', 'phone', 'email', 'password', 'user_id',
+        'name', 'address', 'phone', 'email', 'password','gender','image', 'user_id',
     ];
 
-    public function deliveryPerson(){
-        return $this->hasMany(DeliveryPerson::class,'shop_id');
+    public function shop()
+    {
+        return $this->hasOne(Shop::class);
+    }
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // Each shop can have many products
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

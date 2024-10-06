@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('address');
             $table->string('gender');
-            $table->foreignId('shop_id')->constrained('shops')->onDelete('cascade'); // Links to the shop
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Links to the users table
             $table->string('password');
             $table->timestamps();

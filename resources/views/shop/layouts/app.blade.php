@@ -91,7 +91,7 @@
                                 <i class="fas fa-chart-bar"></i>Delivery Persons List</a>
                         </li>
                         <li>
-                            <a href="{{route('order#list')}}">
+                            <a href="{{route('shopOrder#list')}}">
                                 <i class="fas fa-circle"></i>Order List</a>
                         </li>
                         <li>

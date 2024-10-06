@@ -66,11 +66,20 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function deliveryPerson(){
-        return $this->hasMany(DeliveryPerson::class,'user_id');
+    public function deliveryPersons()
+    {
+        return $this->hasMany(DeliveryPerson::class);
     }
+
     public function shop()
     {
-        return $this->hasOne(Shop::class);
+        return $this->hasOne(Shop::class); // or belongsTo depending on your schema
     }
+
+
+    public function products(){
+        return $this->hasMany(Product::class,'user_id');
+    }
+
+
 }

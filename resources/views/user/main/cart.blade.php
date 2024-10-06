@@ -72,9 +72,9 @@
                         <h5>Total</h5>
                         <h5 id="total">{{$totalPrice + 3000}}</h5>
                     </div>
-                    <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" id="orderBtn">Proceed To Checkout</button> <br>
+                    <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" id="checkoutBtn">Proceed To Checkout</button> <br>
 
-                    <button class="btn btn-block btn-danger font-weight-bold my-3 py-3" id="clearBtn">Clear Cart</button>
+                    <button class="btn btn-block btn-danger font-weight-bold my-3 py-3" id="clearcartBtn">Clear Cart</button>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@ $(document).ready(function () {
     // Your other button handling code...
 
     // Clear Cart
-    $(document).on('click', '#clearBtn', function() {
+    $('#clearcartBtn').on('click',  function() {
         $.ajax({
             type: 'GET',
             url: '{{route('ajax#clearCart')}}',
@@ -115,7 +115,7 @@ $(document).ready(function () {
     });
 
     // Remove Item
-    $(document).on('click', '.btn-danger', function() {
+    $('.btn-danger').on('click', function() {
         var button = $(this);
         var row = button.closest('tr');
         var productId = button.data('id');
@@ -141,7 +141,7 @@ $(document).ready(function () {
     });
 
     // Proceed to Checkout
-    $(document).on('click', '#orderBtn', function() {
+    $('#checkoutBtn').on('click', function() {
         var orderList = [];
         $('#dataTable tbody tr').each(function(index, row) {
             var randomCode = Math.floor(Math.random() * 10000001);
@@ -158,7 +158,7 @@ $(document).ready(function () {
         if (orderList.length > 0) {
             $.ajax({
                 type: 'POST',
-                url: '{{route('ajax#order')}}',
+                url: '{{route('user#checkout')}}',
                 data: { orders: orderList },
                 dataType: 'json',
                 success: function(response) {
@@ -177,7 +177,7 @@ $(document).ready(function () {
 });
 
 
-});
+
 
 
 

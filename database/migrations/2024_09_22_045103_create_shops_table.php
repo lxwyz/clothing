@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('address'); // Shop address
             $table->string('phone')->nullable(); // Optional phone number
             $table->string('email')->unique();
+            $table->string('gender');
+            $table->string('image')->nullable(); // Optional shop image
             $table->string('password'); // Password
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null'); // Foreign key for user (if applicable)
             $table->timestamps(); // Created at and updated at timestamps
