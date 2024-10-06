@@ -14,7 +14,8 @@ class Order extends Model
         'user_id',
         'order_code',
         'total_price',
-        'status'
+        'status',
+        'delivery_person_id',
     ];
     public function deliveryPerson(){
         return $this->belongsTo(DeliveryPerson::class,'delivery_person_id');

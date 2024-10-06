@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('order')->group(function(){
             Route::get('shopOrders',[OrderController::class,'shopOrders'])->name('shopOrder#list');
+            Route::post('/orders/{orderId}/assign-delivery-person', [OrderController::class, 'assignDeliveryPerson'])->name('orders#assignDeliveryPerson');
             // Route::get('shopOrders',[OrderController::class,'list'])->name('shopOrder#list');
         });
     });

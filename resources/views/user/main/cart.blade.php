@@ -174,6 +174,25 @@ $(document).ready(function () {
             alert("No items in the cart!");
         }
     });
+    // Plus and Minus Button Handlers
+    $('.btn-plus').on('click', function() {
+        var row = $(this).closest('tr');
+        var qtyInput = row.find('.qty-input');
+        var currentQty = parseInt(qtyInput.val());
+        qtyInput.val(currentQty + 1); // Increase quantity by 1
+        updateRowTotal(row); // Update row total
+    });
+
+    $('.btn-minus').on('click', function() {
+        var row = $(this).closest('tr');
+        var qtyInput = row.find('.qty-input');
+        var currentQty = parseInt(qtyInput.val());
+
+        if (currentQty > 1) {
+            qtyInput.val(currentQty - 1); // Decrease quantity by 1
+            updateRowTotal(row); // Update row total
+        }
+    });
 });
 
 

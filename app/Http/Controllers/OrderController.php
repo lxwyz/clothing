@@ -4,20 +4,40 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\OrderList;
-
+use App\Models\DeliveryPerson;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function shopOrders(){
-        $shopAdminId = auth()->user()->id;
+        $orders = Order::select('orders.*','users.name as user_name','users.email as user_email')
+                ->when(request('key'),function($query){
+                    $query->where('orders.order_code','like','%'.request('key').'%');
 
-        // Retrieve orders for products belonging to the shop admin
-        $orders = Order::whereHas('product', function($query) use ($shopAdminId) {
-            $query->where('user_id', $shopAdminId);
-        })->paginate(10);
+                })
+                ->leftJoin('users','users.id','orders.user_id')
+                ->orderBy('orders.created_at','asc')
+                ->paginate(3);
 
-        return view('shop.userOrders.view', compact('orders'));
+                $deliveryPeople = DeliveryPerson::all();
+        return view('shop.userOrders.view',compact('orders','deliveryPeople'));
+
+
+    }
+    public function assignDeliveryPerson(Request $request,$orderId){
+        // dd('Reached Controller', $request->all(), $orderId);
+        $request->validate([
+            'delivery_person_id' => 'required|exists:delivery_persons,id'
+        ]);
+
+
+        $order = Order::findOrFail($orderId);
+
+
+        $order->delivery_person_id = $request->delivery_person_id;
+        $order->save();
+
+        return redirect()->back()->with('success','Delivery Person Assigned Successfully');
     }
     // public function assignDeliveryPerson(Request $request, $orderId){
     //     $order = Order::findOrFail($orderId);

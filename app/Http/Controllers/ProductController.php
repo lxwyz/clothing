@@ -69,7 +69,8 @@ class ProductController extends Controller
     public function updatePage($id){
         $products = Product::where('id',$id)->first();
         $categories = Category::select('id','name')->get();
-        return view('shop.products.update',compact('products','categories'));
+        $shops = Shop::select('id', 'name')->get();
+        return view('shop.products.update',compact('products','categories','shops'));
     }
 
     //products update

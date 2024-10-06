@@ -15,12 +15,6 @@
                     </button>
                 </form>
                 <div class="header-button">
-                    <div class="noti-wrap">
-                        <div class="noti__item js-item-menu">
-
-
-                        </div>
-                    </div>
                     <div class="account-wrap">
                         <div class="account-item clearfix js-item-menu">
                             <div class="image ">

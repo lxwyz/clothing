@@ -126,6 +126,13 @@
                     </div>
                 @endif
 
+                @if(session('updateSuccess'))
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-lg"></i>{{ session('updateSuccess') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 <div class="row">
                     <div class="col-3">
                         <h4 class="text-secondary">Search Key: <span class="text-danger">{{ request('key') }}</span></h4>
