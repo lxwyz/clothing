@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\AdminAuthMiddleware;
 use App\Http\Middleware\UserAuthMiddleware;
 use App\Http\Middleware\ShopAuthMiddleware;
+use App\Http\Middleware\DeliveryAuthMiddlware;
 
 class Kernel extends HttpKernel
 {
@@ -69,7 +70,7 @@ class Kernel extends HttpKernel
         'admin_auth'=> AdminAuthMiddleware::class,
         'user_auth' => UserAuthMiddleware::class,
         'shop_auth' => ShopAuthMiddleware::class,
-
+        'delivery_person' => DeliveryAuthMiddlware::class,
     ];
 
 }

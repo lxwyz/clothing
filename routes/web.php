@@ -34,6 +34,12 @@ Route::middleware(['admin_auth'])->group(function(){
 
 Route::middleware(['auth'])->group(function () {
 
+    Route::group(['middleware'=>'delivery_person'],function(){
+       Route::prefix('orders')->group(function(){
+            Route::get('viewOrders',[DeliveryPersonController::class,'viewOrders'])->name('deliveryPerson#viewOrders');
+       });
+    });
+
     //dashboard
     Route::get('dashboard',[AuthController::class,'dashboard'])->name('dashboard');
 
@@ -124,9 +130,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('update{id}',[AdminController::class,'update'])->name('admin#update');
 
 
-    // Route::prefix('shop')->group(function(){
-    //     Route::get('list',[AdminController::class,'shopList'])->name('shop#list');
-    // });
+    Route::prefix('shop')->group(function(){
+        Route::get('shopList',[AdminController::class,'shopList'])->name('shop#list');
+        Route::get('/shops/{id}',[AdminController::class, 'show'])->name('shop#show');
+        Route::delete('/shops/{id}', [AdminController::class, 'destroy'])->name('shop#destroy');
+    });
+
+    Route::prefix('deliveryPerson')->group(function(){
+        Route::get('deliveryPersonList',[AdminController::class,'deliveryPersonList'])->name('delivery#list');
+        Route::get('/delivery-persons/{id}', [AdminController::class, 'viewDeliveryPerson'])->name('delivery#viewDelivery');
+        Route::delete('/delivery-persons/{id}', [AdminController::class, 'deleteDelivery'])->name('delivery#deleteDelivery');
+    });
 });
 
 

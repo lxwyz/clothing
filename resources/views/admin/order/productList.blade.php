@@ -126,7 +126,7 @@
                     <div class="col-3">
                         <h4 class="text-secondary">Search Key: <span class="text-danger">{{ request('key') }}</span></h4>
                     </div>
-                    {{-- <div class="col-3 offset-9">
+                    <div class="col-3 offset-9">
                         <form action="" method="GET">
                             @csrf
                             <div class="d-flex ">
@@ -136,7 +136,7 @@
                                 </button>
                             </div>
                         </form>
-                    </div> --}}
+                    </div>
                 </div>
                 <br>
 

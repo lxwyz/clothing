@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\DeliveryPerson;
 use App\Models\User;
 use App\Models\Shop;
+use App\Models\Order;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Validator;
 
 class DeliveryPersonController extends Controller
 {
+    public function viewOrders(){
+        $orders = Order::select('orders.*','users.name as user_name','users.email as user_email')
+                 ->when(request('key'),function($query){
+                    $query->where('orders.order_code','like','%'.request('key').'%');
+                 })
+                 ->leftJoin('users','users.id','orders.user_id')
+                 ->orderBy('orders.created_at','asc')
+                 ->paginate(3);
+        return view('deliveryPersons.viewOrders',compact('orders'));
+    }
     public function delete($id)
     {
         // Find the delivery person by ID

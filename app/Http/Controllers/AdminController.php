@@ -5,12 +5,56 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Shop;
+use App\Models\DeliveryPerson;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Storage;
 
 class AdminController extends Controller
 {
+    public function deleteDelivery(){
+        $deliveryPerson = DeliveryPerson::findOrFail($id);
+        $deliveryPerson->delete();
+        return redirect()->route('admin.delivery.deliveryList')->with('deleteSuccess', 'Shop deleted successfully.');
+    }
+    public function viewDeliveryPerson($id){
+        $deliveryPerson = DeliveryPerson::findOrFail($id);
+        return view('admin.delivery.viewDelivery',compact('deliveryPerson'));
+    }
+    public function deliveryPersonList(){
+        $deliveryPersons = DeliveryPerson::when(request('key'),function($query){
+                         $query->where('name','like','%'.request('key').'%')
+                               ->orWhere('email','like','%'.request('key').'%')
+                               ->orWhere('phone','like','%'.request('key').'%');
+        })->paginate(3);
+
+        return view('admin.delivery.deliveryList',compact('deliveryPersons'));
+    }
+
+    public function shopList()
+    {
+        $shops = Shop::when(request('key'), function($query) {
+                $query->where('name', 'like', '%' . request('key') . '%')
+                      ->orWhere('email', 'like', '%' . request('key') . '%')
+                      ->orWhere('phone', 'like', '%' . request('key') . '%');
+            })->paginate(3);
+
+        return view('admin.shop.shopList', compact('shops'));
+    }
+
+    public function show($id){
+        $shop =Shop::findOrFail($id);
+        return view('admin.shop.show',compact('shop'));
+    }
+
+    public function destroy($id)
+    {
+        $shop = Shop::findOrFail($id);
+        $shop->delete();
+        return redirect()->route('admin.shops.index')->with('deleteSuccess', 'Shop deleted successfully.');
+    }
+
     public function list(){
         $admins = User::when(request('key'),function($query){
             $query->orWhere('name','like','%'.request('key').'%')

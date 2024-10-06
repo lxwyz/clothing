@@ -90,7 +90,7 @@ img.img-thumbnail.img-fluid.shadow-sm {
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a class="js-arrow" href="{{route('shop#register')}}">
+                            <a class="js-arrow" href="{{route('shop#list')}}">
                                 <i class="fas fa-tachometer-alt"></i>Shop Lists
                             </a>
                         </li>
@@ -112,6 +112,11 @@ img.img-thumbnail.img-fluid.shadow-sm {
                                <i class="bi bi-people-fill"></i> Customter Lists
                             </a>
                         </li>
+                        <li>
+                            <a href="{{route('delivery#list')}}">
+                               <i class="fas fa-square"></i> Delivery Persons Lists
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -121,10 +126,7 @@ img.img-thumbnail.img-fluid.shadow-sm {
                 <div class="container-fluid">
                     <div class="header-wrap">
                         <form class="form-header" action="" method="POST">
-                            <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                            <button class="au-btn--submit" type="submit">
-                                <i class="zmdi zmdi-search"></i>
-                            </button>
+
                         </form>
                         <div class="header-button">
                             <div class="noti-wrap">
@@ -176,24 +178,19 @@ img.img-thumbnail.img-fluid.shadow-sm {
                                                 <span class="email">{{Auth::user()->email}}</span>
                                             </div>
                                         </div>
-                                        <div class="account-dropdown__body">
+                                        {{-- <div class="account-dropdown__body">
                                             <div class="account-dropdown__item">
                                                 <a href="#">
                                                     <i class="zmdi zmdi-account"></i>Account</a>
                                             </div>
                                         </div>
-                                        <div class="account-dropdown__body">
-                                            <div class="account-dropdown__item">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-accounts"></i>Shop Lists</a>
-                                            </div>
-                                        </div>
+
                                         <div class="account-dropdown__body">
                                             <div class="account-dropdown__item">
                                                 <a href="#">
                                                     <i class="bi bi-key"></i>Change Password</a>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="account-dropdown__footer my-3">
                                             <form action="{{route('logout')}}" method="post" class="d-flex justify-content-center">
                                                 @csrf
